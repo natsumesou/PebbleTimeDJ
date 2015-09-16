@@ -35,22 +35,46 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="app\express\public\sound\Tarpey_Conglomerate.mp3" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="app\express\views\index.jade" />
     <None Include="src\definition\express.d.ts" />
     <None Include="src\definition\mime.d.ts">
       <Publish>False</Publish>
     </None>
     <None Include="src\definition\node.d.ts" />
     <None Include="src\definition\serve-static.d.ts" />
-    <None Include="src\express\app.ts" />
+    <None Include="src\express\app.ts">
+      <Publish>False</Publish>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\" />
     <Folder Include="app\express\" />
+    <Folder Include="app\express\public\" />
+    <Folder Include="app\express\public\js\" />
+    <Folder Include="app\express\public\js\lib\" />
+    <Folder Include="app\express\public\sound\" />
     <Folder Include="src\" />
     <Folder Include="src\express\" />
     <Folder Include="src\definition\" />
+    <Folder Include="app\express\views\" />
+    <Folder Include="src\express\public\" />
+    <Folder Include="src\express\public\js\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\definition\es6-promise.d.ts" />
+    <None Include="src\definition\es6-promises.d.ts" />
+    <None Include="src\definition\MediaStream.d.ts" />
+    <None Include="src\definition\socket.io-client.d.ts" />
+    <None Include="src\definition\socket.io.d.ts" />
+    <None Include="src\express\public\js\socket.ts" />
+    <None Include="src\express\public\js\audio.ts" />
+    <None Include="src\definition\waa.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="app\express\public\js\lib\socket.io.js" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|Any CPU'">
