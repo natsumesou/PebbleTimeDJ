@@ -8,7 +8,7 @@ module App {
         private sources: Source[] = [];
         private index: number = 0;
 
-        private volume: number = 0.5;
+        private volume: number = 1;
 
         private get duration(): number {
             return 3;
@@ -25,7 +25,8 @@ module App {
 
             for (var i = 0; i < urls.length; i++) {
                 var mute = i != this.index;
-                this.sources.push(new Source(this.context, urls[i], this.volume, mute));
+                var delay = 3 * i * 1000;
+                this.sources.push(new Source(this.context, urls[i], this.volume, mute, delay));
             }
         }
 
@@ -47,6 +48,13 @@ module App {
             this.sources[this.index].fadeout(this.duration);
             this.sources[nextIndex].fadein(this.duration);
             setTimeout(() => this.changeIndex(this.index, nextIndex), this.duration * 1000);
+        }
+
+        public changeSpeed(speed: number, duration?: number) {
+            if (duration == null) {
+                duration = this.duration;
+            }
+            this.sources[this.index].changeSpeed(speed, duration);
         }
 
         public filter(type: FilterType, frequency: number, quality?: number) {

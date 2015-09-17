@@ -11,7 +11,7 @@ module App {
         private audioFilter: Filter;
         private volume: number;
 
-        constructor(context: AudioContext, url: string, volume: number, mute: boolean) {
+        constructor(context: AudioContext, url: string, volume: number, mute: boolean, loadDelay: number) {
             this.context = context;
             this.volume = volume;
             this.gainNode = this.context.createGain();
@@ -19,8 +19,7 @@ module App {
 
             this.source = this.context.createBufferSource();
             this.audioFilter = new Filter(this.context, this.source, this.gainNode, this.context.sampleRate);
-
-            this.loadSource(url, this.source);
+            setTimeout(() => this.loadSource(url, this.source), loadDelay);
         }
 
         public play() {
@@ -45,6 +44,10 @@ module App {
 
         public fadeout(duration: number) {
             this.gainNode.gain.setTargetAtTime(0, this.context.currentTime, duration);
+        }
+
+        public changeSpeed(speed: number, duration: number) {
+            this.source.playbackRate.setTargetAtTime(speed, this.context.currentTime, duration);
         }
 
         public filter(type: FilterType, frequency: number, quality?: number) {

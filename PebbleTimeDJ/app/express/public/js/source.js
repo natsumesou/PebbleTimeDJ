@@ -3,14 +3,15 @@
 var App;
 (function (App) {
     var Source = (function () {
-        function Source(context, url, volume, mute) {
+        function Source(context, url, volume, mute, loadDelay) {
+            var _this = this;
             this.context = context;
             this.volume = volume;
             this.gainNode = this.context.createGain();
             this.gainNode.gain.value = mute ? 0 : this.volume;
             this.source = this.context.createBufferSource();
             this.audioFilter = new App.Filter(this.context, this.source, this.gainNode, this.context.sampleRate);
-            this.loadSource(url, this.source);
+            setTimeout(function () { return _this.loadSource(url, _this.source); }, loadDelay);
         }
         Source.prototype.play = function () {
             this.source.start(0);
@@ -28,6 +29,9 @@ var App;
         };
         Source.prototype.fadeout = function (duration) {
             this.gainNode.gain.setTargetAtTime(0, this.context.currentTime, duration);
+        };
+        Source.prototype.changeSpeed = function (speed, duration) {
+            this.source.playbackRate.setTargetAtTime(speed, this.context.currentTime, duration);
         };
         Source.prototype.filter = function (type, frequency, quality) {
             this.audioFilter.change(type, frequency, quality);

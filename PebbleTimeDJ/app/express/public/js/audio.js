@@ -6,7 +6,7 @@ var App;
         function Audio(urls) {
             this.sources = [];
             this.index = 0;
-            this.volume = 0.5;
+            this.volume = 1;
             try {
                 AudioContext = AudioContext || webkitAudioContext;
                 this.context = new AudioContext();
@@ -17,7 +17,8 @@ var App;
             }
             for (var i = 0; i < urls.length; i++) {
                 var mute = i != this.index;
-                this.sources.push(new App.Source(this.context, urls[i], this.volume, mute));
+                var delay = 3 * i * 1000;
+                this.sources.push(new App.Source(this.context, urls[i], this.volume, mute, delay));
             }
         }
         Object.defineProperty(Audio.prototype, "duration", {
@@ -43,6 +44,12 @@ var App;
             this.sources[this.index].fadeout(this.duration);
             this.sources[nextIndex].fadein(this.duration);
             setTimeout(function () { return _this.changeIndex(_this.index, nextIndex); }, this.duration * 1000);
+        };
+        Audio.prototype.changeSpeed = function (speed, duration) {
+            if (duration == null) {
+                duration = this.duration;
+            }
+            this.sources[this.index].changeSpeed(speed, duration);
         };
         Audio.prototype.filter = function (type, frequency, quality) {
             this.sources[this.index].filter(type, frequency, quality);
