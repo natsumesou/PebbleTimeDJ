@@ -12,6 +12,7 @@ var paths = {
     tsDef: "./src/definitions/"
 };
 var tsProject = ts.createProject({
+    target: "ES5",
     declarationFiles: true,
     noExternalResolve: false,
     module: "commonjs",
