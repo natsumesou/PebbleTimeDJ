@@ -4,6 +4,7 @@ var App;
 (function (App) {
     var socket = io();
     socket.on("control", function (data) {
+        console.log(data);
         if (!app.started) {
             app.play();
             return;

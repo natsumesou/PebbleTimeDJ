@@ -34,7 +34,14 @@ module App {
         }
 
         public change(type: FilterType, frequency: number, duration: number) {
-            this.nodes[type].frequency.setTargetAtTime(this.rateToValue(frequency, this.sampleRate), this.context.currentTime, duration);
+            var calcFrequency = this.nodes[type].frequency.value + this.rateToValue(frequency, this.sampleRate);
+            if (calcFrequency < this.minValue) {
+                calcFrequency = this.minValue;
+            }
+            if (calcFrequency > this.sampleRate) {
+                calcFrequency = this.sampleRate;
+            }
+            this.nodes[type].frequency.setTargetAtTime(calcFrequency, this.context.currentTime, duration);
             this.connect(this.nodes[type]);
         }
 
@@ -69,13 +76,7 @@ module App {
         }
 
         private rateToValue(value: number, maxValue: number): number {
-            if (value < 0) {
-                value = 0;
-            }
-            if (value > 1) {
-                value = 1;
-            }
-            return value * (maxValue - this.minValue) + this.minValue;
+            return value * this.sampleRate;
         }
     }
 }

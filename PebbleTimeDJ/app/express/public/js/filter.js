@@ -44,7 +44,14 @@ var App;
             configurable: true
         });
         Filter.prototype.change = function (type, frequency, duration) {
-            this.nodes[type].frequency.setTargetAtTime(this.rateToValue(frequency, this.sampleRate), this.context.currentTime, duration);
+            var calcFrequency = this.nodes[type].frequency.value + this.rateToValue(frequency, this.sampleRate);
+            if (calcFrequency < this.minValue) {
+                calcFrequency = this.minValue;
+            }
+            if (calcFrequency > this.sampleRate) {
+                calcFrequency = this.sampleRate;
+            }
+            this.nodes[type].frequency.setTargetAtTime(calcFrequency, this.context.currentTime, duration);
             this.connect(this.nodes[type]);
         };
         Filter.stringToFilterType = function (typeString) {
@@ -76,13 +83,7 @@ var App;
             this.analyser.connect(this.context.destination);
         };
         Filter.prototype.rateToValue = function (value, maxValue) {
-            if (value < 0) {
-                value = 0;
-            }
-            if (value > 1) {
-                value = 1;
-            }
-            return value * (maxValue - this.minValue) + this.minValue;
+            return value * this.sampleRate;
         };
         return Filter;
     })();

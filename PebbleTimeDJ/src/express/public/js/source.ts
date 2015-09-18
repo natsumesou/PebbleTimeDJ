@@ -48,11 +48,25 @@ module App {
         }
 
         public changeSpeed(speed: number, duration: number) {
-            this.source.playbackRate.setTargetAtTime(speed, this.context.currentTime, duration);
+            var calcSpeed = this.source.playbackRate.value + speed;
+            if (calcSpeed < 0.2) {
+                calcSpeed = 0.2;
+            }
+            if (calcSpeed > 3) {
+                calcSpeed = 3;
+            }
+            this.source.playbackRate.setTargetAtTime(calcSpeed, this.context.currentTime, duration);
         }
 
         public changeVolume(volume: number, duration: number) {
-            this.gainNode.gain.setTargetAtTime(volume, this.context.currentTime, duration);
+            var calcVolume = this.gainNode.gain.value + volume;
+            if (calcVolume < 0.2) {
+                calcVolume = 0.2;
+            }
+            if (calcVolume > 1) {
+                calcVolume = 1;
+            }
+            this.gainNode.gain.setTargetAtTime(calcVolume, this.context.currentTime, duration);
         }
 
         public filter(type: FilterType, frequency: number, duration: number) {
