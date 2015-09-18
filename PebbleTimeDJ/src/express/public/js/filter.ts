@@ -7,7 +7,9 @@ module App {
         private nodes: BiquadFilterNode[] = [];
         private sampleRate: number;
         private context: AudioContext;
+        private analyser: AnalyserNode;
         private source: AudioBufferSourceNode;
+        private gainNode: GainNode;
 
         private get maxQuality(): number {
             return 1000;
@@ -15,32 +17,25 @@ module App {
         private get minValue(): number {
             return 0.0001;
         }
-        private get duration(): number {
-            return 3;
-        }
 
-        constructor(context: AudioContext, source: AudioBufferSourceNode, gain: GainNode, sampleRate: number) {
+        constructor(context: AudioContext, analyser: AnalyserNode, source: AudioBufferSourceNode, gain: GainNode, sampleRate: number) {
             this.context = context;
+            this.analyser = analyser;
             this.source = source;
+            this.gainNode = gain;
             this.sampleRate = sampleRate;
             for (var i = 0; i < FilterType.allpass; i++) {
                 var node = context.createBiquadFilter();
                 node.type = FilterType[i].toString();
                 node.frequency.value = this.sampleRate / 2;
-                gain.connect(node);
-                this.source.connect(gain);
                 this.nodes.push(node);
             }
-            this.nodes[FilterType.lowpass].connect(this.context.destination);
+            this.connect(this.nodes[FilterType.lowpass]);
         }
 
-        public change(type: FilterType, frequency: number, quality?: number) {
-            this.nodes[type].frequency.setTargetAtTime(this.rateToValue(frequency, this.sampleRate), this.context.currentTime, this.duration);
-            if (quality != null) {
-                this.nodes[type].Q.setTargetAtTime(this.rateToValue(quality, this.maxQuality), this.context.currentTime, this.duration);
-            }
-            this.nodes[type].connect(this.context.destination);
-            this.source.connect(this.nodes[type]);
+        public change(type: FilterType, frequency: number, duration: number) {
+            this.nodes[type].frequency.setTargetAtTime(this.rateToValue(frequency, this.sampleRate), this.context.currentTime, duration);
+            this.connect(this.nodes[type]);
         }
 
         public static stringToFilterType(typeString: string): FilterType {
@@ -64,6 +59,13 @@ module App {
                 case "all pass":
                     return FilterType.allpass;
             }
+        }
+
+        private connect(node: BiquadFilterNode) {
+            this.source.connect(node);
+            node.connect(this.gainNode);
+            this.gainNode.connect(this.analyser);
+            this.analyser.connect(this.context.destination);
         }
 
         private rateToValue(value: number, maxValue: number): number {

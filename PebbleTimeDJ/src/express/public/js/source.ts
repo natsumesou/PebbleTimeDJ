@@ -5,20 +5,21 @@ module App {
 
     export class Source {
         private context: AudioContext;
+        private analyser: AnalyserNode;
         private gainNode: GainNode;
         private source: AudioBufferSourceNode;
         private buffer: AudioBuffer;
         private audioFilter: Filter;
         private volume: number;
 
-        constructor(context: AudioContext, url: string, volume: number, mute: boolean, loadDelay: number) {
+        constructor(context: AudioContext, analyser: AnalyserNode, url: string, volume: number, mute: boolean, loadDelay: number) {
             this.context = context;
+            this.analyser = analyser;
             this.volume = volume;
             this.gainNode = this.context.createGain();
             this.gainNode.gain.value = mute ? 0 : this.volume;
 
             this.source = this.context.createBufferSource();
-            this.audioFilter = new Filter(this.context, this.source, this.gainNode, this.context.sampleRate);
             setTimeout(() => this.loadSource(url, this.source), loadDelay);
         }
 
@@ -32,7 +33,7 @@ module App {
 
             // regenerate BufferSource because it can't start twice.
             this.source = this.context.createBufferSource();
-            this.audioFilter = new Filter(this.context, this.source, this.gainNode, this.context.sampleRate);
+            this.audioFilter = new Filter(this.context, this.analyser, this.source, this.gainNode, this.context.sampleRate);
 
             this.gainNode.gain.value = 0;
             this.source.buffer = this.buffer;
@@ -50,8 +51,12 @@ module App {
             this.source.playbackRate.setTargetAtTime(speed, this.context.currentTime, duration);
         }
 
-        public filter(type: FilterType, frequency: number, quality?: number) {
-            this.audioFilter.change(type, frequency, quality);
+        public changeVolume(volume: number, duration: number) {
+            this.gainNode.gain.setTargetAtTime(volume, this.context.currentTime, duration);
+        }
+
+        public filter(type: FilterType, frequency: number, duration: number) {
+            this.audioFilter.change(type, frequency, duration);
         }
 
         private loadSource(url: string, source: AudioBufferSourceNode) {
@@ -67,6 +72,7 @@ module App {
                         }
                         source.buffer = buffer;
                         this.buffer = buffer;
+                        this.audioFilter = new Filter(this.context, this.analyser, this.source, this.gainNode, this.context.sampleRate);
                     },
                     () => {
                         console.error("decode audio data error");

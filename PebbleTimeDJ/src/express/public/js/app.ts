@@ -1,6 +1,6 @@
 /// <reference path="./audio.ts" />
 
-var app;
+var app: App.Audio;
 
 module App {
     app = new App.Audio([
@@ -11,5 +11,9 @@ module App {
         "/sound/Restless_Modern_Maybe_We_Could.mp3",
     ]);
 
-    app.play();
+    var canvas = <HTMLCanvasElement>document.getElementById("visualizer");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    var visualizer = new App.Visualizer(app.analyser, canvas);
+    visualizer.draw();
 }

@@ -2,11 +2,13 @@
 html
   head
     title
+    link(href="/css/init.css" rel="stylesheet")
     script(src="/js/lib/socket.io.js")
     script(src="/js/socket.js")
     script(src="/js/filter.js")
     script(src="/js/source.js")
     script(src="/js/audio.js")
-    script(src="/js/app.js")
+    script(src="/js/visualizer.js")
   body
   canvas#visualizer
+  script(src="/js/app.js")

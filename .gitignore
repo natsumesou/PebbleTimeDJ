@@ -207,3 +207,7 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+
+
+PebbleTimeDJ/app/express/app/*.js
+PebbleTimeDJ/app/express/public/js/*.js

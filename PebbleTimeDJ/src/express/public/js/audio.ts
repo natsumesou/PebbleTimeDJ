@@ -5,10 +5,21 @@ module App {
 
     export class Audio {
         private context: AudioContext;
+        private _analyser: AnalyserNode;
         private sources: Source[] = [];
         private index: number = 0;
 
         private volume: number = 1;
+
+        private _started: boolean = false;
+
+        public get started(): boolean {
+            return this._started;
+        }
+
+        public get analyser(): AnalyserNode {
+            return this._analyser;
+        }
 
         private get duration(): number {
             return 3;
@@ -23,15 +34,19 @@ module App {
                 console.error(e);
             }
 
+            this._analyser = this.context.createAnalyser();
+
             for (var i = 0; i < urls.length; i++) {
                 var mute = i != this.index;
                 var delay = 3 * i * 1000;
-                this.sources.push(new Source(this.context, urls[i], this.volume, mute, delay));
+                var source = new Source(this.context, this._analyser, urls[i], this.volume, mute, delay);
+                this.sources.push(source);
             }
         }
 
         public play() {
             this.sources[this.index].play();
+            this._started = true;
         }
 
         public stop() {
@@ -57,8 +72,18 @@ module App {
             this.sources[this.index].changeSpeed(speed, duration);
         }
 
-        public filter(type: FilterType, frequency: number, quality?: number) {
-            this.sources[this.index].filter(type, frequency, quality);
+        public changeVolume(volume: number, duration?: number) {
+            if (duration == null) {
+                duration = this.duration;
+            }
+            this.sources[this.index].changeVolume(volume, duration);
+        }
+
+        public filter(type: FilterType, frequency: number, duration?: number) {
+            if (duration == null) {
+                duration = this.duration;
+            }
+            this.sources[this.index].filter(type, frequency, duration);
         }
 
         private changeIndex(oldIndex: number, currentIndex: number) {
