@@ -19,7 +19,7 @@ var App;
             this._analyser = this.context.createAnalyser();
             for (var i = 0; i < urls.length; i++) {
                 var mute = i != this.index;
-                var delay = 3 * i * 1000;
+                var delay = 6 * i * 1000;
                 var source = new App.Source(this.context, this._analyser, urls[i], this.volume, mute, delay);
                 this.sources.push(source);
             }

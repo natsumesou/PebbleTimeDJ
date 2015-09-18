@@ -15,10 +15,10 @@ var App;
                 break;
             case "filter":
                 var filterType = App.Filter.stringToFilterType(data.filterType);
-                app.filter(filterType, data.value, data.duration);
+                app.filter(filterType, +data.value, +data.duration);
                 break;
             case "speed":
-                app.changeSpeed(data.value);
+                app.changeSpeed(+data.value, +data.duration);
                 break;
         }
     });
