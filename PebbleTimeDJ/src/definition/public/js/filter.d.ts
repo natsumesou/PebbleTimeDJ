@@ -23,6 +23,5 @@ declare module App {
         change(type: FilterType, frequency: number, duration: number): void;
         static stringToFilterType(typeString: string): FilterType;
         private connect(node);
-        private rateToValue(value, maxValue);
     }
 }

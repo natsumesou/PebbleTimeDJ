@@ -44,7 +44,13 @@ var App;
             configurable: true
         });
         Filter.prototype.change = function (type, frequency, duration) {
-            var calcFrequency = this.nodes[type].frequency.value + this.rateToValue(frequency, this.sampleRate);
+            var calcFrequency;
+            if (frequency > 0) {
+                calcFrequency = this.nodes[type].frequency.value * 3;
+            }
+            else {
+                calcFrequency = this.nodes[type].frequency.value / 3;
+            }
             if (calcFrequency < this.minValue) {
                 calcFrequency = this.minValue;
             }
@@ -81,9 +87,6 @@ var App;
             node.connect(this.gainNode);
             this.gainNode.connect(this.analyser);
             this.analyser.connect(this.context.destination);
-        };
-        Filter.prototype.rateToValue = function (value, maxValue) {
-            return value * this.sampleRate;
         };
         return Filter;
     })();

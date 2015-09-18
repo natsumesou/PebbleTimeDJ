@@ -34,7 +34,12 @@ module App {
         }
 
         public change(type: FilterType, frequency: number, duration: number) {
-            var calcFrequency = this.nodes[type].frequency.value + this.rateToValue(frequency, this.sampleRate);
+            var calcFrequency;
+            if (frequency > 0) {
+                calcFrequency = this.nodes[type].frequency.value * 3;
+            } else {
+                calcFrequency = this.nodes[type].frequency.value / 3;
+            }
             if (calcFrequency < this.minValue) {
                 calcFrequency = this.minValue;
             }
@@ -73,10 +78,6 @@ module App {
             node.connect(this.gainNode);
             this.gainNode.connect(this.analyser);
             this.analyser.connect(this.context.destination);
-        }
-
-        private rateToValue(value: number, maxValue: number): number {
-            return value * this.sampleRate;
         }
     }
 }
