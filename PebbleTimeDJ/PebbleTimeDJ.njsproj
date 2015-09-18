@@ -13,7 +13,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>042d48b5-dfaf-4d0b-9df5-f58cbeb24c44</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>app\express\app.js</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <StartWebBrowser>True</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -35,6 +36,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="app\express\public\css\init.css" />
     <Content Include="app\express\public\sound\Tarpey_Conglomerate.mp3" />
     <Content Include="package.json" />
     <Content Include="README.md" />
@@ -45,7 +47,7 @@
     </None>
     <None Include="src\definition\node.d.ts" />
     <None Include="src\definition\serve-static.d.ts" />
-    <None Include="src\express\app.ts">
+    <None Include="src\express\app\app.ts">
       <Publish>False</Publish>
     </None>
   </ItemGroup>
@@ -55,11 +57,13 @@
     <Folder Include="app\express\public\" />
     <Folder Include="app\express\public\js\" />
     <Folder Include="app\express\public\js\lib\" />
+    <Folder Include="app\express\public\css\" />
     <Folder Include="app\express\public\sound\" />
     <Folder Include="src\" />
     <Folder Include="src\express\" />
     <Folder Include="src\definition\" />
     <Folder Include="app\express\views\" />
+    <Folder Include="src\express\app\" />
     <Folder Include="src\express\public\" />
     <Folder Include="src\express\public\js\" />
   </ItemGroup>
