@@ -43,6 +43,29 @@ module App {
             this.source.connect(this.nodes[type]);
         }
 
+        public static stringToFilterType(typeString: string): FilterType {
+            switch(typeString) {
+                case "low pass":
+                    return FilterType.lowpass;
+                case "high pass":
+                    return FilterType.highpass;
+                case "band pass":
+                    return FilterType.bandpass;
+                case "band pass":
+                    return FilterType.bandpass;
+                case "low shelf":
+                    return FilterType.lowshelf;
+                case "high shelf":
+                    return FilterType.highshelf;
+                case "peaking":
+                    return FilterType.peaking;
+                case "notch":
+                    return FilterType.notch;
+                case "all pass":
+                    return FilterType.allpass;
+            }
+        }
+
         private rateToValue(value: number, maxValue: number): number {
             if (value < 0) {
                 value = 0;

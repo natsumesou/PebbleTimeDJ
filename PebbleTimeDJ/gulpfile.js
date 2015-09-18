@@ -9,8 +9,9 @@ var paths = {
     lib: "./public/js/lib/",
     tsSource: "./src/express/**/*.ts",
     tsOutput: "./app/express/",
-    tsDef: "./src/definitions/"
+    tsDef: "./src/definition/"
 };
+
 var tsProject = ts.createProject({
     target: "ES5",
     declarationFiles: true,
@@ -18,6 +19,7 @@ var tsProject = ts.createProject({
     module: "commonjs",
     removeComments: true
 });
+
 gulp.task("ts-compile", function () {
     var tsResult = gulp.src(paths.tsSource)
         .pipe(ts(tsProject));

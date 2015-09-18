@@ -21,15 +21,14 @@ module PebbleTimeDJ {
         res.render("index");
     });
 
-    app.post("/filter", function (req, res) {
-        console.log(req.body);
-        io.emit("filter", req.body);
-        res.send(req.body);
+    app.post("/control", function (req, res) {
+        io.emit("control", req.body);
+        res.send("ok");
     });
 
     io.on("connection", function (socket) {
         console.log("connection");
     });
 
-    server.listen(80);
+    server.listen(3002);
 }
