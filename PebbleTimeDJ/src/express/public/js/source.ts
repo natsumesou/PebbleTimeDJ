@@ -55,6 +55,7 @@ module App {
             if (calcSpeed > 3) {
                 calcSpeed = 3;
             }
+            console.log(calcSpeed);
             this.source.playbackRate.setTargetAtTime(calcSpeed, this.context.currentTime, duration);
         }
 
@@ -66,6 +67,7 @@ module App {
             if (calcVolume > 1) {
                 calcVolume = 1;
             }
+            console.log(calcVolume);
             this.gainNode.gain.setTargetAtTime(calcVolume, this.context.currentTime, duration);
         }
 
