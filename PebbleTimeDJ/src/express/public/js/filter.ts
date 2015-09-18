@@ -27,7 +27,13 @@ module App {
             for (var i = 0; i < FilterType.allpass; i++) {
                 var node = context.createBiquadFilter();
                 node.type = FilterType[i].toString();
-                node.frequency.value = this.sampleRate / 2;
+                if (i == FilterType.lowpass || i == FilterType.lowshelf) {
+                    node.frequency.value = this.sampleRate;
+                } else if (i == FilterType.highpass || i == FilterType.highshelf) {
+                    node.frequency.value = 0;
+                } else {
+                    node.frequency.value = this.sampleRate / 2;
+                }
                 this.nodes.push(node);
             }
             this.connect(this.nodes[FilterType.lowpass]);
