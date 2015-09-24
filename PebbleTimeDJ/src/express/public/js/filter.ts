@@ -30,7 +30,7 @@ module App {
                 if (i == FilterType.lowpass || i == FilterType.lowshelf) {
                     node.frequency.value = this.sampleRate;
                 } else if (i == FilterType.highpass || i == FilterType.highshelf) {
-                    node.frequency.value = 0;
+                    node.frequency.value = 40;
                 } else {
                     node.frequency.value = this.sampleRate / 2;
                 }
@@ -42,9 +42,9 @@ module App {
         public change(type: FilterType, frequency: number, duration: number) {
             var calcFrequency;
             if (frequency > 0) {
-                calcFrequency = this.nodes[type].frequency.value * 3;
+                calcFrequency = this.nodes[type].frequency.value * 5;
             } else {
-                calcFrequency = this.nodes[type].frequency.value / 3;
+                calcFrequency = this.nodes[type].frequency.value / 5;
             }
             if (calcFrequency < this.minValue) {
                 calcFrequency = this.minValue;
